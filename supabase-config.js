@@ -3,8 +3,8 @@
 
 (function() {
   // These will be replaced by Netlify environment variables at build time
-  const SUPABASE_URL = 'https://your-project.supabase.co';
-  const SUPABASE_ANON_KEY = 'your-anon-key';
+  const SUPABASE_URL = 'https://llrdtvnufcstvlcphkvj.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxscmR0dm51ZmNzdHZsY3Boa3ZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM0MTEyMjEsImV4cCI6MjA5ODk4NzIyMX0.h-u9BLLPVz_5ohSRJHf7BPc_EFpDkw46hJZy5D7o2ME';
 
   // Initialize Supabase client
   window.supabase = window.supabase || {};
