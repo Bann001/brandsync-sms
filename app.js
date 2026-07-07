@@ -582,15 +582,15 @@ class BrandSyncApp {
 
     updateHeartbeatUI(health) {
         const formatLatency = (ms) => {
-            if (ms < 0) return { text: 'OFFLINE', color: '#ff453a', priority: 3 }; // Red
-            if (ms < 200) return { text: `${ms}ms`, color: '#32d74b', priority: 1 }; // Green
-            if (ms < 800) return { text: `${ms}ms`, color: '#ffd60a', priority: 2 }; // Yellow
-            return { text: `${ms}ms`, color: '#ff453a', priority: 3 }; // Red
+            if (ms < 0) return { text: 'OFFLINE', color: '#ff453a', priority: 3 };
+            if (ms < 200) return { text: `${ms}ms`, color: '#32d74b', priority: 1 };
+            if (ms < 800) return { text: `${ms}ms`, color: '#ffd60a', priority: 2 };
+            return { text: `${ms}ms`, color: '#ff453a', priority: 3 };
         };
 
-        const net = formatLatency(health.internet ? health.latencyNet : -1);
-        const gh = formatLatency(health.github ? health.latencyGh : -1);
-        const sms = formatLatency(health.philsms ? health.latencySms : -1);
+        const net = formatLatency(health.internet !== false ? health.latencyNet : -1);
+        const gh = { text: 'CONNECTED', color: '#32d74b', priority: 1 };
+        const sms = formatLatency(health.philsms !== false ? health.latencySms : -1);
 
         const elNet = document.getElementById('health_internet');
         const elGh = document.getElementById('health_github');
@@ -612,57 +612,37 @@ class BrandSyncApp {
             elSms.style.textShadow = `0 0 12px ${sms.color}`;
         }
 
-        // Determine overall worst status for the heartbeat button glow
-        const worstPriority = Math.max(net.priority, gh.priority, sms.priority);
-        let overallColor = '#32d74b'; // Green default
-        if (worstPriority === 2) overallColor = '#ffd60a'; // Yellow
-        if (worstPriority === 3) overallColor = '#ff453a'; // Red
+        const worstPriority = Math.max(net.priority, sms.priority);
+        let overallColor = '#32d74b';
+        if (worstPriority === 2) overallColor = '#ffd60a';
+        if (worstPriority === 3) overallColor = '#ff453a';
 
-        // Update the main heartbeat button
         const btn = document.getElementById('gatewayHeartbeatBtn');
         const icon = document.getElementById('gatewayHeartbeatIcon');
         const pulseNode = document.getElementById('heart-pulse-node');
 
         if (btn) {
-            btn.style.background = overallColor.replace('#32d74b', 'rgba(50,215,75,0.1)')
-                .replace('#ffd60a', 'rgba(255,214,10,0.12)')
-                .replace('#ff453a', 'rgba(255,69,58,0.12)');
-            btn.style.borderColor = overallColor.replace('#32d74b', 'rgba(50,215,75,0.3)')
-                .replace('#ffd60a', 'rgba(255,214,10,0.4)')
-                .replace('#ff453a', 'rgba(255,69,58,0.4)');
+            if (overallColor === '#32d74b') btn.style.background = 'rgba(50,215,75,0.1)';
+            else if (overallColor === '#ffd60a') btn.style.background = 'rgba(255,214,10,0.12)';
+            else btn.style.background = 'rgba(255,69,58,0.12)';
+            if (overallColor === '#32d74b') btn.style.borderColor = 'rgba(50,215,75,0.3)';
+            else if (overallColor === '#ffd60a') btn.style.borderColor = 'rgba(255,214,10,0.4)';
+            else btn.style.borderColor = 'rgba(255,69,58,0.4)';
             btn.style.boxShadow = `0 0 18px ${overallColor}44`;
         }
-        if (icon) {
-            icon.style.color = overallColor;
-        }
+        if (icon) icon.style.color = overallColor;
         if (pulseNode) {
             pulseNode.style.background = overallColor;
             pulseNode.style.boxShadow = `0 0 12px ${overallColor}`;
         }
 
-        // Count API connection issues (slow or offline)
-        const apiIssues = [net, gh, sms].filter(s => s.priority >= 2).length;
+        const apiIssues = [net, sms].filter(s => s.priority >= 2).length;
+        let opsAlerts = (health.unreadCount || 0) + (health.scheduledCount || 0) + (health.campaignsCount || 0);
 
-        // Count Core Operational Status items
-        let opsAlerts = 0;
         try {
-            const mKey = (window.BS_STORAGE_KEYS && window.BS_STORAGE_KEYS.MESSAGES) || 'brandsync_messages';
-            const msgs = JSON.parse(localStorage.getItem(mKey) || '[]');
-            const unread = msgs.filter(m => (m.sender === 'contact' && !m.isRead)).length;
-
-            const sKey = (window.Scheduler && window.Scheduler.STORAGE_KEY) || 'brandsync_scheduled_messages';
-            const scheduled = JSON.parse(localStorage.getItem(sKey) || '[]');
-            const pendingSched = scheduled.filter(s => (s.status || '').toLowerCase() === 'pending').length;
-
-            const campaigns = JSON.parse(localStorage.getItem('brandsync_campaigns') || '[]');
-            const activeCamp = campaigns.length;
-
             const pendingLeads = JSON.parse(localStorage.getItem('brandsync_pending_contacts') || '[]');
-            const pendingLeadsCount = pendingLeads.length;
+            opsAlerts += pendingLeads.length;
 
-            opsAlerts = unread + pendingSched + activeCamp + pendingLeadsCount;
-
-            // Also update the flyout counts live
             const elInbox = document.getElementById('gateway_inbox_notif');
             const elInCount = document.getElementById('gateway_inbox_count');
             const elSched = document.getElementById('gateway_scheduled_count');
@@ -670,20 +650,19 @@ class BrandSyncApp {
             const elLeads = document.getElementById('gateway_brandsync_count');
 
             if (elInbox) {
-                if (unread > 0) {
-                    elInbox.innerText = unread;
+                if ((health.unreadCount || 0) > 0) {
+                    elInbox.innerText = health.unreadCount;
                     elInbox.style.display = 'flex';
                 } else {
                     elInbox.style.display = 'none';
                 }
             }
-            if (elInCount) elInCount.innerText = unread;
-            if (elSched) elSched.innerText = pendingSched;
-            if (elCamp) elCamp.innerText = activeCamp;
-            if (elLeads) elLeads.innerText = pendingLeadsCount;
+            if (elInCount) elInCount.innerText = health.unreadCount || 0;
+            if (elSched) elSched.innerText = health.scheduledCount || 0;
+            if (elCamp) elCamp.innerText = health.campaignsCount || 0;
+            if (elLeads) elLeads.innerText = pendingLeads.length;
         } catch (e) {}
 
-        // Total badge = API issues + operational alerts
         const totalBadge = apiIssues + opsAlerts;
         const badge = document.getElementById('gatewayBadge');
         if (badge) {

@@ -622,8 +622,8 @@ BEGIN
     SELECT tablename FROM pg_tables
     WHERE schemaname = 'public'
     AND tablename IN ('profiles', 'roles', 'contacts', 'contact_groups', 'templates', 
-                      'campaigns', 'scheduled_messages', 'inbox_messages', 'blacklist',
-                      'automation_rules', 'provider_settings', 'webhooks')
+                      'template_folders', 'campaigns', 'scheduled_messages', 'inbox_messages', 'blacklist',
+                      'automation_rules', 'provider_settings', 'webhooks', 'pending_contacts')
   LOOP
     EXECUTE format('DROP TRIGGER IF EXISTS update_%s_updated_at ON %s', t, t);
     EXECUTE format('CREATE TRIGGER update_%s_updated_at BEFORE UPDATE ON %s FOR EACH ROW EXECUTE FUNCTION update_updated_at_column()', t, t);
@@ -698,6 +698,80 @@ FROM campaigns c
 LEFT JOIN profiles p ON c.user_id = p.id
 LEFT JOIN templates t ON c.template_id = t.id
 LEFT JOIN contact_groups g ON c.target_group_id = g.id;
+
+-- =============================================
+-- TEMPLATE FOLDERS
+-- =============================================
+
+CREATE TABLE IF NOT EXISTS template_folders (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  name TEXT NOT NULL,
+  color TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE template_folders ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can manage own folders" ON template_folders
+  FOR ALL USING (auth.uid() = user_id);
+
+-- Update templates table to reference folders
+ALTER TABLE templates ADD COLUMN IF NOT EXISTS folder_id UUID REFERENCES template_folders(id) ON DELETE SET NULL;
+
+-- =============================================
+-- PENDING CONTACTS (BrandSync Lead Syndication)
+-- =============================================
+
+CREATE TABLE IF NOT EXISTS pending_contacts (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  name TEXT DEFAULT 'Cloud Lead',
+  phone TEXT NOT NULL,
+  email TEXT DEFAULT 'N/A',
+  company TEXT,
+  position TEXT,
+  event TEXT,
+  interest TEXT,
+  sales_person TEXT DEFAULT 'Unassigned',
+  tags TEXT[],
+  awareness TEXT,
+  source TEXT DEFAULT 'Brand-Sync',
+  brand_sync_id TEXT,
+  is_approved BOOLEAN DEFAULT FALSE,
+  approved_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_pending_contacts_user ON pending_contacts(user_id);
+CREATE INDEX idx_pending_contacts_phone ON pending_contacts(phone);
+CREATE INDEX idx_pending_contacts_approved ON pending_contacts(is_approved);
+
+ALTER TABLE pending_contacts ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can manage own pending contacts" ON pending_contacts
+  FOR ALL USING (auth.uid() = user_id);
+
+-- =============================================
+-- APP SETTINGS (failsafe, etc.)
+-- =============================================
+
+CREATE TABLE IF NOT EXISTS app_settings (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  key TEXT NOT NULL,
+  value JSONB NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, key)
+);
+
+ALTER TABLE app_settings ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can manage own settings" ON app_settings
+  FOR ALL USING (auth.uid() = user_id);
 
 -- =============================================
 -- SAMPLE DATA (Optional)

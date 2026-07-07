@@ -18,7 +18,6 @@ window.AuthService = {
     init() {
         const users = this._getUsers();
         if (users.length === 0) {
-            // Seed default Super Admin on first boot
             const defaultAdmin = {
                 id: 'usr_' + Date.now(),
                 username: 'admin',
@@ -35,8 +34,6 @@ window.AuthService = {
             this._setUsers([defaultAdmin]);
             console.log('[Auth] Default Super Admin seeded (admin / dadasafa)');
         } else {
-            // Security Recovery: Ensure 'admin' username always has SUPER_ADMIN privileges
-            // (fixes accidental lockouts if the root account is downgraded)
             const adminUser = users.find(u => u.username.toLowerCase() === 'admin');
             if (adminUser && adminUser.role !== this.ROLES.SUPER_ADMIN) {
                 adminUser.role = this.ROLES.SUPER_ADMIN;
@@ -44,6 +41,8 @@ window.AuthService = {
                 console.warn('[Auth Security] Restored administrative privileges for root account: admin');
             }
         }
+        // Sync users with Supabase
+        this._syncUsersToSupabase();
     },
 
     // ─── Hashing ──────────────────────────────────────────
@@ -66,10 +65,10 @@ window.AuthService = {
     },
     _setUsers(users) {
         localStorage.setItem(this.STORAGE_KEYS.USERS, JSON.stringify(users));
-        // Trigger cloud sync
         if (window.BrandSyncAPI && window.BrandSyncAPI._set) {
             window.BrandSyncAPI._set(this.STORAGE_KEYS.USERS, users);
         }
+        this._syncUsersToSupabase();
     },
     _getSession() {
         try { return JSON.parse(sessionStorage.getItem(this.STORAGE_KEYS.SESSION) || 'null'); }
@@ -306,5 +305,21 @@ window.AuthService = {
 
         if (window.AuditLog) window.AuditLog.log('reset_password', `Password reset for: ${user.username}`);
         return { success: true };
+    },
+
+    _syncUsersToSupabase() {
+        if (!window.supabaseClient) return;
+        const users = this._getUsers();
+        const upsertData = users.map(u => ({
+            id: u.id,
+            username: u.username,
+            full_name: u.fullName,
+            position: u.position,
+            company: u.company,
+            role: u.role,
+            is_active: u.isActive !== false,
+            last_login: u.lastLogin
+        }));
+        window.supabaseClient.from('profiles').upsert(upsertData, { onConflict: 'id' }).then(() => {}).catch(() => {});
     }
 };

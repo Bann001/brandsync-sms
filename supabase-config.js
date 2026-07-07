@@ -1,96 +1,71 @@
-// Supabase Configuration
-// This initializes the Supabase client using environment variables from Netlify
-
 (function() {
-  // These will be replaced by Netlify environment variables at build time
-  const SUPABASE_URL = 'https://llrdtvnufcstvlcphkvj.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxscmR0dm51ZmNzdHZsY3Boa3ZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM0MTEyMjEsImV4cCI6MjA5ODk4NzIyMX0.h-u9BLLPVz_5ohSRJHf7BPc_EFpDkw46hJZy5D7o2ME';
+  const config = window.BrandSyncConfig || {};
+  const SUPABASE_URL = config.SUPABASE_URL || 'https://llrdtvnufcstvlcphkvj.supabase.co';
+  const SUPABASE_ANON_KEY = config.SUPABASE_ANON_KEY || '';
 
-  // Initialize Supabase client
-  window.supabase = window.supabase || {};
-  window.supabase.createClient = window.supabase.createClient || (() => {});
+  window.supabaseClient = null;
 
-  if (typeof window.supabase.createClient === 'function') {
-    window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  } else if (typeof supabase !== 'undefined' && supabase.createClient) {
-    window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  if (typeof supabase !== 'undefined' && supabase.createClient) {
+    try {
+      window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: { persistSession: true, autoRefreshToken: true }
+      });
+      console.log('Supabase client initialized:', SUPABASE_URL);
+    } catch (e) {
+      console.error('Failed to initialize Supabase client:', e.message);
+    }
+  } else {
+    console.warn('Supabase JS library not loaded. Check CDN.');
   }
 
-  // Helper functions for common operations
   window.SupabaseDB = {
-    // Generic CRUD operations
+    from(table) { return window.supabaseClient ? window.supabaseClient.from(table) : null; },
+
     async select(table, options = {}) {
+      if (!window.supabaseClient) return [];
       let query = window.supabaseClient.from(table).select(options.columns || '*');
       if (options.filter) query = query.eq(options.filter.column, options.filter.value);
       if (options.order) query = query.order(options.order.column, { ascending: options.order.ascending !== false });
       if (options.limit) query = query.limit(options.limit);
-      if (options.range) query = query.range(options.range.from, options.range.to);
       const { data, error } = await query;
-      if (error) throw error;
-      return data;
+      if (error) { console.error('Supabase select error:', error); return []; }
+      return data || [];
     },
 
     async insert(table, data) {
+      if (!window.supabaseClient) return null;
       const { data: result, error } = await window.supabaseClient.from(table).insert(data).select();
-      if (error) throw error;
+      if (error) { console.error('Supabase insert error:', error); return null; }
+      return result;
+    },
+
+    async upsert(table, data, opts = {}) {
+      if (!window.supabaseClient) return null;
+      const { data: result, error } = await window.supabaseClient.from(table).upsert(data, opts).select();
+      if (error) { console.error('Supabase upsert error:', error); return null; }
       return result;
     },
 
     async update(table, id, data) {
+      if (!window.supabaseClient) return null;
       const { data: result, error } = await window.supabaseClient.from(table).update(data).eq('id', id).select();
-      if (error) throw error;
+      if (error) { console.error('Supabase update error:', error); return null; }
       return result;
     },
 
     async delete(table, id) {
+      if (!window.supabaseClient) return false;
       const { error } = await window.supabaseClient.from(table).delete().eq('id', id);
-      if (error) throw error;
+      if (error) { console.error('Supabase delete error:', error); return false; }
       return true;
     },
 
-    // Auth helpers
-    async signUp(email, password, metadata = {}) {
-      const { data, error } = await window.supabaseClient.auth.signUp({ email, password, options: { data: metadata } });
-      if (error) throw error;
-      return data;
-    },
-
-    async signIn(email, password) {
-      const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
-      if (error) throw error;
-      return data;
-    },
-
-    async signOut() {
-      const { error } = await window.supabaseClient.auth.signOut();
-      if (error) throw error;
-      return true;
-    },
-
-    async getSession() {
-      const { data, error } = await window.supabaseClient.auth.getSession();
-      if (error) throw error;
-      return data.session;
-    },
-
-    async getUser() {
-      const { data, error } = await window.supabaseClient.auth.getUser();
-      if (error) throw error;
-      return data.user;
-    },
-
-    onAuthStateChange(callback) {
-      return window.supabaseClient.auth.onAuthStateChange(callback);
-    },
-
-    // Realtime subscriptions
-    subscribe(table, callback, filter = {}) {
+    subscribe(table, callback) {
+      if (!window.supabaseClient) return null;
       return window.supabaseClient
         .channel(`db-changes-${table}`)
-        .on('postgres_changes', { event: '*', schema: 'public', table, ...filter }, callback)
+        .on('postgres_changes', { event: '*', schema: 'public', table }, callback)
         .subscribe();
     }
   };
-
-  console.log('Supabase client initialized');
 })();
