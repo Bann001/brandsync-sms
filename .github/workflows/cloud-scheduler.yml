@@ -1,0 +1,27 @@
+name: BrandSync Cloud Scheduler
+
+on:
+  schedule:
+    # Runs every 10 minutes
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    # Allows manual trigger for testing
+
+jobs:
+  dispatch-sms:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Cloud Dispatcher
+        env:
+          BS_GH_TOKEN: ${{ secrets.BS_GH_TOKEN }}
+          BS_GIST_ID: ${{ secrets.BS_GIST_ID }}
+          BS_PHILSMS_TOKEN: ${{ secrets.BS_PHILSMS_TOKEN }}
+        run: node scripts/cloud-scheduler.js

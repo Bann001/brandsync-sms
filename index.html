@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandSync SMS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.344.0/font/lucide.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/lucide-static@0.344.0/lucide.min.js"></script>
+    <script>
+        // Initialize Lucide icons after DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        });
+    </script>
+    <script>
+        // Initialize Lucide icons for data-lucide attributes
+        if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
+        }
+    </script>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="styles.css?v=CRM_MASTER_v5">
+</head>
+
+<body class="dark-theme">
+    <!-- Master Lock Overlay (Premium Glassmorphism Auth) -->
+    <div id="masterLockOverlay"
+        style="position:fixed; inset:0; z-index:999999; background:#050507; display:flex; align-items:center; justify-content:center; padding:24px; overflow:hidden;">
+
+        <!-- Deep Ambient Background -->
+        <div
+            style="position:absolute; top:-20%; left:-20%; width:140%; height:140%; background: radial-gradient(circle at 30% 30%, rgba(10, 132, 255, 0.12) 0%, transparent 40%), radial-gradient(circle at 70% 70%, rgba(191, 90, 242, 0.08) 0%, transparent 40%); filter:blur(100px); pointer-events:none; opacity:0.8;">
+        </div>
+
+        <!-- Floating Glass Card (Landscape) -->
+        <div class="glass-panel login-card-landscape"
+            style="width:100%; max-width:940px; padding:64px; border-radius:48px; position:relative; z-index:10; background:rgba(255,255,255,0.012); border:1px solid rgba(255,255,255,0.08); box-shadow:0 100px 200px rgba(0,0,0,0.8); backdrop-filter:blur(100px) saturate(200%); animation: floatCard 6s ease-in-out infinite; display: flex; flex-direction: column; gap: 48px;">
+
+            <div style="display: flex; gap: 80px; align-items: center; justify-content: center; flex-wrap: wrap;">
+                
+                <!-- Left Section: Branding -->
+                <div style="flex: 1; min-width: 320px; text-align: left;">
+                    <!-- Dynamic Logo Container -->
+                    <div style="position:relative; width:80px; height:80px; margin-bottom: 32px;">
+                        <div
+                            style="position:absolute; inset:-12px; background:linear-gradient(135deg, #0a84ff, #bf5af2); border-radius:50%; filter:blur(28px); opacity:0.3; animation: pulseGlow 4s infinite alternate;">
+                        </div>
+                        <div
+                            style="position:relative; width:100%; height:100%; background:linear-gradient(135deg, #0a84ff, #bf5af2); border-radius:24px; display:flex; align-items:center; justify-content:center; box-shadow:0 24px 48px rgba(10,132,255,0.4); transform:rotate(-5deg);">
+                            <i class="icon-lucide-shield-check" style="font-size:2.2rem; color:#fff;"></i>
+                        </div>
+                    </div>
+
+                    <h1
+                        style="font-size:3.5rem; color:#fff; font-weight:950; margin-bottom:16px; letter-spacing:-0.05em; line-height:1; background:linear-gradient(to bottom, #fff, rgba(255,255,255,0.6)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">
+                        BrandSync<br>SMS</h1>
+                    <p
+                        style="color:rgba(255,255,255,0.4); font-size:1.1rem; filter: brightness(1.2); margin-bottom:0; font-weight:500; letter-spacing:0.02em; line-height: 1.5; max-width: 280px;">
+                        Secure enterprise messaging gateway. Authorize session to proceed.</p>
+                </div>
+
+                <!-- Right Section: Authentication Form -->
+                <div style="flex: 1.2; min-width: 320px;">
+                    <div style="display:flex; flex-direction:column; gap:22px; margin-bottom:32px;">
+                        <!-- Username -->
+                        <div style="position:relative; text-align:left;">
+                            <label
+                                style="font-size:0.65rem; font-weight:900; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.15em; margin-bottom:12px; display:block; margin-left:6px;">Secure
+                                Identifier</label>
+                            <div style="position:relative; display:flex; align-items:center;">
+                                <i class="icon-lucide-user"
+                                    style="position:absolute; left:20px; color:#0a84ff; font-size:1.1rem; filter:drop-shadow(0 0 8px rgba(10,132,255,0.4));"></i>
+                                <input type="text" id="loginUsername" placeholder="Username"
+                                    style="width:100%; background:rgba(0,0,0,0.4); border:1.5px solid rgba(255,255,255,0.06); border-radius:20px; padding:18px 20px 18px 56px; color:#fff; font-size:1rem; outline:none; transition:0.4s; font-weight:600;"
+                                    onfocus="this.style.borderColor='rgba(10,132,255,0.6)';this.style.background='rgba(0,0,0,0.6)';this.style.boxShadow='0 0 25px rgba(10,132,255,0.15)'"
+                                    onblur="this.style.borderColor='rgba(255,255,255,0.06)';this.style.background='rgba(0,0,0,0.4)';this.style.boxShadow='none'">
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div style="position:relative; text-align:left;">
+                            <label
+                                style="font-size:0.65rem; font-weight:900; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.15em; margin-bottom:12px; display:block; margin-left:6px;">Auth
+                                Key</label>
+                            <div style="position:relative; display:flex; align-items:center;">
+                                <i class="icon-lucide-key-round"
+                                    style="position:absolute; left:20px; color:#bf5af2; font-size:1.1rem; filter:drop-shadow(0 0 8px rgba(191,90,242,0.4));"></i>
+                                <input type="password" id="loginPassword" placeholder="••••••••"
+                                    style="width:100%; background:rgba(0,0,0,0.4); border:1.5px solid rgba(255,255,255,0.06); border-radius:20px; padding:18px 20px 18px 56px; color:#fff; font-size:1rem; outline:none; transition:0.4s; font-weight:600; letter-spacing:0.3em;"
+                                    onfocus="this.style.borderColor='rgba(10,132,255,0.6)';this.style.background='rgba(0,0,0,0.6)';this.style.boxShadow='0 0 25px rgba(10,132,255,0.15)'"
+                                    onblur="this.style.borderColor='rgba(255,255,255,0.06)';this.style.background='rgba(0,0,0,0.4)';this.style.boxShadow='none'"
+                                    onkeydown="if(event.key === 'Enter') window.app.handleLogin()">
+                            </div>
+                        </div>
+
+                        <div id="authError"
+                            style="display:none; color:#ff453a; font-size:0.75rem; font-weight:900; text-transform:uppercase; letter-spacing:0.1em; text-align:center; padding:14px; background:rgba(255,69,58,0.1); border-radius:14px; border:1px solid rgba(255,69,58,0.2); animation: shake 0.4s ease-in-out;">
+                            Identity denied. Try again.
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <button onclick="window.app.handleLogin()" type="button"
+                        style="width:100%; background:#fff; color:#000; border:none; border-radius:22px; padding:20px; font-weight:950; font-size:1.1rem; cursor:pointer; transition:0.4s; margin-bottom:16px; box-shadow:0 25px 50px rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; gap:12px; letter-spacing:-0.01em;"
+                        onmouseover="this.style.transform='translateY(-4px) scale(1.02)';this.style.boxShadow='0 35px 70px rgba(255,255,255,0.2)'"
+                        onmouseout="this.style.transform='none';this.style.boxShadow='0 25px 50px rgba(255,255,255,0.15)'">
+                        Access Dashboard <i class="icon-lucide-move-right" style="font-size:1.2rem; stroke-width:3;"></i>
+                    </button>
+
+                    <!-- Support Action -->
+                    <button type="button"
+                        onclick="window.showToast('Please request credentials from Admin Jek (Marketing) or DSI Team', 'info')"
+                        style="width:100%; display:flex; align-items:center; justify-content:center; gap:10px; color:rgba(255,255,255,0.4); font-weight:800; text-decoration:none; font-size:0.7rem; padding:14px; border-radius:18px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02); transition:0.3s; cursor:pointer; text-transform:uppercase; letter-spacing:0.08em;"
+                        onmouseover="this.style.background='rgba(255,255,255,0.05)';this.style.color='#fff';this.style.borderColor='rgba(255,255,255,0.12)'"
+                        onmouseout="this.style.background='rgba(255,255,255,0.02)';this.style.color='rgba(255,255,255,0.4)';this.style.borderColor='rgba(255,255,255,0.06)'">
+                        <i class="icon-lucide-help-circle" style="font-size:1rem;"></i>
+                        Request Credentials
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer Built Directly Into The Card -->
+            <div class="login-footer" style="padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.04);">
+                <span>Powered by <strong>Jek | Marketing Department</strong> – 0.0.1 © 2026 BrandSync</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modern AI Scan Loading Screen (Apple Style) -->
+    <div id="aiLoadingScreen">
+        <!-- Full-Screen Gradient Aura -->
+        <div class="apple-aura-base"></div>
+        <div class="apple-aura-spin"></div>
+        <div class="apple-aura-glow1"></div>
+        <div class="apple-aura-glow2"></div>
+
+        <div class="ai-loading-logo">
+            <i class="icon-lucide-scan-face"></i>
+        </div>
+        <div class="ai-loading-text">Initializing BrandSync SMS</div>
+    </div>
+
+    <!-- Main App UI -->
+
+    <div class="app-container" style="display:none;" id="mainAppContainer">
+        
+        <!-- Global View Loading Overlay -->
+        <div id="globalLoadingOverlay" class="ai-scanner-overlay" style="z-index: 50000; border-radius: 0;">
+            <div class="scanner-aura"></div>
+            <div class="scanner-beam"></div>
+            <div class="scanner-content">
+                <div class="scanner-logo"><i class="icon-lucide-scan-face"></i></div>
+                <div class="scanner-text">Optimizing Neural Index...</div>
+            </div>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar glass-panel">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="icon-lucide-message-square-dashed"></i>
+                    <span>BrandSync SMS</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-group">
+                    <p class="nav-label">Core</p>
+                    <a href="#dashboard" class="nav-item active" data-path="dashboard">
+                        <i class="icon-lucide-layout-dashboard"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#send-sms" class="nav-item" data-path="send-sms">
+                        <i class="icon-lucide-send"></i>
+                        <span>Send SMS</span>
+                    </a>
+                    <a href="#scheduled" class="nav-item" data-path="scheduled">
+                        <i class="icon-lucide-calendar-clock"></i>
+                        <span>Scheduled</span>
+                        <span id="sidebar_scheduled_count"
+                            style="font-size:0.75rem; color:rgba(255,255,255,0.4); font-weight:800; margin-left:auto;">0</span>
+                    </a>
+                    <a href="#inbox" class="nav-item" data-path="inbox">
+                        <i class="icon-lucide-activity"></i>
+                        <span>Inbox <span
+                                style="font-size:0.65rem; color:rgba(255,255,255,0.3); font-weight:800; margin-left:4px;">(Under
+                                Dev)</span></span>
+                        <div id="sidebar_inbox_notif"
+                            style="display:none; min-width:18px; height:18px; padding:0 6px; border-radius:10px; background:#ff453a; color:#fff; font-size:0.65rem; font-weight:900; align-items:center; justify-content:center; margin-left:8px;">
+                            0</div>
+                    </a>
+                    <a href="#campaigns" class="nav-item" data-path="campaigns">
+                        <i class="icon-lucide-megaphone"></i>
+                        <span>Campaigns <span
+                                style="font-size:0.65rem; color:rgba(255,255,255,0.3); font-weight:800; margin-left:4px;">(Under
+                                Dev)</span></span>
+                        <span id="sidebar_campaigns_count"
+                            style="font-size:0.75rem; color:rgba(255,255,255,0.4); font-weight:800; margin-left:auto;">0</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <p class="nav-label">Management</p>
+                    <a href="#contacts" class="nav-item" data-path="contacts">
+                        <i class="icon-lucide-users"></i>
+                        <span>Contacts</span>
+                    </a>
+                    <a href="#templates" class="nav-item" data-path="templates">
+                        <i class="icon-lucide-file-text"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="#automation" class="nav-item" data-path="automation">
+                        <i class="icon-lucide-git-branch"></i>
+                        <span>Automation <span
+                                style="font-size:0.65rem; color:rgba(255,255,255,0.3); font-weight:800; margin-left:4px;">(Under
+                                Dev)</span></span>
+                    </a>
+                    <a href="#blacklist" class="nav-item" data-path="blacklist">
+                        <i class="icon-lucide-shield-ban"></i>
+                        <span>Blacklist <span
+                                style="font-size:0.65rem; color:rgba(255,255,255,0.3); font-weight:800; margin-left:4px;">(Under
+                                Dev)</span></span>
+                    </a>
+                    <a href="#users" class="nav-item" data-path="users">
+                        <i class="icon-lucide-user-cog"></i>
+                        <span>Users & Access</span>
+                    </a>
+                </div>
+
+                <div class="sidebar-footer">
+                    <a href="#api" class="nav-item" data-path="api">
+                        <i class="icon-lucide-terminal"></i>
+                        <span>API & Integrations</span>
+                    </a>
+                    <div class="user-profile"
+                        style="display:flex; align-items:center; gap:12px; padding:12px; border-radius:14px; background:var(--surface-glass); border:1px solid var(--border-glass);"
+                        onclick="window.location.hash='#profile'">
+                        <div class="avatar">A</div>
+                        <div class="user-info" style="flex:1;">
+                            <span class="user-name" style="display:block; font-size:0.85rem; font-weight:700;">Admin
+                                User</span>
+                            <span class="user-credits"
+                                style="display:block; font-size:0.75rem; color:var(--credit-color);"><span
+                                    id="sidebar-credits-val">1,450</span> Credits</span>
+                        </div>
+                        <button onclick="event.stopPropagation(); window.app.lockInterface()"
+                            style="width:36px; height:36px; background:rgba(255,69,58,0.15); border:1.5px solid rgba(255,69,58,0.4); cursor:pointer; border-radius:50%; transition:0.4s; display:flex; align-items:center; justify-content:center; padding:0; box-shadow:0 0 20px rgba(255,69,58,0.3); aspect-ratio:1/1;"
+                            onmouseover="this.style.background='rgba(255,69,58,0.3)'; this.style.transform='scale(1.1) rotate(15deg)'; this.style.boxShadow='0 0 35px rgba(255,69,58,0.6)'; this.style.borderColor='rgba(255,69,58,0.8)'"
+                            onmouseout="this.style.background='rgba(255,69,58,0.15)'; this.style.transform='scale(1) rotate(0deg)'; this.style.boxShadow='0 0 20px rgba(255,69,58,0.3)'; this.style.borderColor='rgba(255,69,58,0.4)'"
+                            title="Secure Master Lock">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:#fff;">
+                                <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5L13 14"></path>
+                                <path d="M9 10c0-1.5 1.5-3 3-3s3 1.5 3 3v4H9V10z"></path>
+                                <rect width="18" height="11" x="3" y="11" rx="2"></rect>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace" style="height: 100vh; overflow-y: auto;">
+            <!-- Topbar -->
+            <header class="topbar glass-panel">
+                <div class="topbar-left">
+                    <h1 id="page-title">Dashboard</h1>
+                </div>
+                <div class="topbar-right">
+                    <div id="header-credits-badge" class="glass-panel"
+                        style="display: flex; align-items: center; justify-content: center; height: 34px; padding: 0 14px; border-radius: 50px; border: 1px solid rgba(191, 90, 242, 0.3); background: rgba(191, 90, 242, 0.1); margin-right: 8px; cursor: pointer; box-sizing: border-box;"
+                        title="Click to refresh balance">
+                        <i class="icon-lucide-wallet"
+                            style="font-size: 0.9rem; color: var(--credit-color); margin-right: 8px;"></i>
+                        <span style="font-size: 0.85rem; font-weight: 600; color: #fff; white-space: nowrap;"><span
+                                id="header-credits-val">...</span> Credits</span>
+                    </div>
+                    <button id="btnTopUp" class="btn"
+                        style="height: 34px; background: rgba(255, 159, 10, 0.1); color: #fff; border-radius: 50px; padding: 0 14px; font-size: 0.82rem; font-weight: 600; margin-right: 12px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid rgba(255, 159, 10, 0.3); backdrop-filter: blur(10px); box-sizing: border-box;">
+                        <i class="icon-lucide-calculator" style="font-size: 0.9rem; color: #ff9f0a;"></i> Credit
+                        Conversion
+                    </button>
+                    <div class="search-box glass-input" style="position: relative;">
+                        <i class="icon-lucide-search"></i>
+                        <input type="text" id="globalSearch" placeholder="Search identity index..."
+                            oninput="window.BrandSyncAppInstance.handleGlobalSearch(this.value)"
+                            onblur="setTimeout(() => document.getElementById('globalSearchResults').style.display='none', 200)">
+                        <div id="globalSearchResults" class="glass-panel"
+                            style="display:none; position: absolute; top: 100%; left:0; width: 320px; max-height: 250px; overflow-y: auto; z-index: 50000; margin-top: 10px; border-radius: 12px; background: rgba(30,30,35,0.95); border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+                            <!-- Results Injected Here -->
+                        </div>
+                    </div>
+                    <div style="position: relative; display: flex; align-items: center; gap: 8px;">
+                        <button id="gatewayHeartbeatBtn" onclick="window.BrandSyncAppInstance.toggleGateway()" class="btn icon-btn"
+                            title="Gateway Heartbeat: Active Pulse"
+                            style="background: rgba(50, 215, 75, 0.1); border: 1px solid rgba(50, 215, 75, 0.2); position: relative; transition: all 0.6s ease; box-shadow: 0 0 15px rgba(50, 215, 75, 0.2);">
+                            <i id="gatewayHeartbeatIcon" class="icon-lucide-heart-pulse" style="color:#32d74b; font-size: 1rem; transition: color 0.6s ease;"></i>
+                            <div id="gatewayBadge"
+                                style="position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 50%; background: #ff453a; color: #fff; font-size: 0.65rem; font-weight: 900; align-items: center; justify-content: center; border: 2px solid #1c1c1e; box-shadow: 0 4px 12px rgba(255,69,58,0.5); pointer-events: none; display: none; animation: badgePop 0.3s ease-out;">
+                                0</div>
+                        </button>
+                        <button id="failsafeToggleBtn" onclick="window.BrandSyncAppInstance.toggleFailsafe()" class="btn icon-btn"
+                            title="Emergency Failsafe: Disconnect All APIs"
+                            style="background: rgba(255, 69, 58, 0.05); border: 1px solid rgba(255, 69, 58, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                            <i id="failsafeIcon" data-lucide="alert-triangle" style="color: #ffd60a; font-size: 1rem;"></i>
+                        </button>
+                        <div id="gatewayFlyout" class="glass-panel"
+                            style="display:none; position: absolute; top: calc(100% + 15px); right: 0; width: 280px; padding: 24px; border-radius: 20px; background: #1c1c22; border: 1px solid rgba(255,255,255,0.25); box-shadow: 0 50px 150px rgba(0,0,0,0.9); z-index: 1000000; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: top right;">
+                            <div
+                                style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <div id="heart-pulse-node"
+                                        style="width:8px; height:8px; border-radius:50%; background:#32d74b; box-shadow:0 0 10px #32d74b; animation: pulse 2s infinite;">
+                                    </div>
+                                    <h4
+                                        style="font-size:0.85rem; font-weight:800; color:#fff; letter-spacing:0.02em; margin:0;">
+                                        SYSTEM GATEWAY</h4>
+                                </div>
+                                <button onclick="window.app.lockInterface()"
+                                    style="width:28px; height:28px; background:rgba(255,69,58,0.2); border:1px solid rgba(255,69,58,0.3); cursor:pointer; border-radius:50%; display:grid; place-items:center; padding:0; transition:0.2s;"
+                                    onmouseover="this.style.background='rgba(255,69,58,0.35)'; this.style.transform='scale(1.1)'"
+                                    onmouseout="this.style.background='rgba(255,69,58,0.2)'; this.style.transform='scale(1)'"
+                                    title="Lock System Gateway">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff"
+                                        stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:16px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span
+                                        style="font-size:0.75rem; color:rgba(255,255,255,0.6); font-weight:700; display:flex; align-items:center; gap:8px;">
+                                        <i class="icon-lucide-wifi" style="font-size:0.85rem; opacity:0.7;"></i>
+                                        Internet
+                                    </span>
+                                    <span id="health_internet"
+                                        style="font-size:0.75rem; color:#32d74b; font-weight:900; text-shadow:0 0 12px #32d74b;">CONNECTED</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span
+                                        style="font-size:0.75rem; color:rgba(255,255,255,0.6); font-weight:700; display:flex; align-items:center; gap:8px;">
+                                        <i class="icon-lucide-cloud" style="font-size:0.85rem; opacity:0.7;"></i>
+                                        GitHub Sync
+                                    </span>
+                                    <span id="health_github"
+                                        style="font-size:0.75rem; color:#32d74b; font-weight:900; text-shadow:0 0 12px #32d74b;">CONNECTED</span>
+                                </div>
+                                <div id="statusIndicator_sms"
+                                    style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span
+                                        style="font-size:0.75rem; color:rgba(255,255,255,0.6); font-weight:700; display:flex; align-items:center; gap:8px;">
+                                        <i class="icon-lucide-terminal" style="font-size:0.85rem; opacity:0.7;"></i>
+                                        PhilSMS API
+                                    </span>
+                                    <span id="health_philsms"
+                                        style="font-size:0.75rem; color:#32d74b; font-weight:900; text-shadow:0 0 12px #32d74b;">CONNECTED</span>
+                                </div>
+                                <div
+                                    style="display:flex; flex-direction:column; gap:12px; border-top:1px solid rgba(255,255,255,0.05); padding-top:16px;">
+                                    <span
+                                        style="font-size:0.65rem; color:rgba(255,255,255,0.3); font-weight:800; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;">Core
+                                        Operational Status</span>
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <span
+                                            style="font-size:0.75rem; color:rgba(255,255,255,0.6); font-weight:700;">Inbox
+                                            Messages</span>
+                                        <div id="gateway_inbox_notif"
+                                            style="display:none; min-width:18px; height:18px; padding:0 6px; border-radius:10px; background:#ff453a; color:#fff; font-size:0.65rem; font-weight:900; align-items:center; justify-content:center;">
+                                            0</div>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <span
+                                            style="font-size:0.75rem; color:rgba(255,255,255,0.6); font-weight:700;">Scheduled
+                                            Messages</span>
+                                        <span id="gateway_scheduled_count"
+                                            style="font-size:0.75rem; color:#fff; font-weight:900;">0</span>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <span
+                                            style="font-size:0.75rem; color:rgba(255,255,255,0.6); font-weight:700;">BrandSync
+                                            Leads</span>
+                                        <div id="gateway_brandsync_count"
+                                            style="min-width:18px; height:18px; padding:0 6px; border-radius:10px; background:#0a84ff; color:#fff; font-size:0.65rem; font-weight:900; display:flex; align-items:center; justify-content:center;">
+                                            0</div>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <span
+                                            style="font-size:0.75rem; color:rgba(255,255,255,0.6); font-weight:700;">Active
+                                            Campaigns</span>
+                                        <span id="gateway_campaigns_count"
+                                            style="font-size:0.75rem; color:#fff; font-weight:900;">0</span>
+                                    </div>
+                                </div>
+                                <div style="height:1px; background:rgba(255,255,255,0.08); margin:4px 0;"></div>
+                                <div style="display:flex; align-items:center; gap:8px; opacity: 0.6;">
+                                    <div
+                                        style="width:16px; height:16px; border-radius:4px; background:rgba(10,132,255,0.1); border:1px solid rgba(10,132,255,0.3); display:flex; align-items:center; justify-content:center;">
+                                        <i class="icon-lucide-activity" style="font-size:10px; color:#0a84ff;"></i>
+                                    </div>
+                                    <span
+                                        style="font-size:0.7rem; color:#fff; font-weight:800; text-transform:uppercase; letter-spacing:0.04em;">Operational
+                                        Node Pulse</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="window.location.hash='send-sms'" class="btn primary-btn"><i
+                            class="icon-lucide-plus"></i> New SMS</button>
+                </div>
+            </header>
+
+            <!-- Dynamic Content Area -->
+            <div id="app-content" class="content-area">
+                <!-- Content injected via JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- SMS Credit Conversion Modal (Apple Glass Style) -->
+    <div id="topUpModal"
+        style="display:none; position:fixed; inset:0; z-index:10000; background:rgba(0,0,0,0.3); backdrop-filter:blur(8px); align-items:center; justify-content:center; animation: fadeIn 0.3s ease-out; padding: 20px;">
+        <div class="glass-panel"
+            style="width:720px; max-width: 95vw; padding:32px; border-radius:32px; border:1px solid rgba(255,255,255,0.18); box-shadow: 0 40px 100px -20px rgba(0,0,0,0.6); transform: translateY(-10px); animation: slideUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); background: rgba(30, 30, 35, 0.4); backdrop-filter: blur(40px) saturate(180%) contrast(100%); -webkit-backdrop-filter: blur(40px) saturate(180%) contrast(100%);">
+            <div
+                style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; position: relative; z-index: 2;">
+                <h2
+                    style="font-size:1.25rem; display:flex; align-items:center; gap:10px; color: #fff; font-weight: 700; letter-spacing: -0.02em;">
+                    <i class="icon-lucide-calculator" style="color:var(--success-color);"></i> SMS Credit Conversion
+                </h2>
+                <button id="closeTopUp"
+                    style="background:rgba(255,69,58,0.15); border:1px solid rgba(255,69,58,0.3); color:#ff453a; cursor:pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 1.2rem; line-height: 1; box-shadow: 0 4px 10px rgba(255,69,58,0.1);"
+                    onmouseover="this.style.background='rgba(255,69,58,0.25)';this.style.transform='scale(1.1)'"
+                    onmouseout="this.style.background='rgba(255,69,58,0.15)';this.style.transform='scale(1)'">&times;</button>
+            </div>
+
+            <div
+                style="display: flex; gap: 32px; align-items: flex-start; margin-bottom: 24px; position: relative; z-index: 2;">
+                <!-- Left Column: Calculator -->
+                <div style="flex: 1.2;">
+                    <p style="color:rgba(255,255,255,0.7); font-size:0.85rem; margin-bottom:18px; line-height: 1.4;">
+                        Enter your budget below to instantly calculate available SMS units.</p>
+                    <div
+                        style="background:rgba(255,255,255,0.03); padding:24px; border-radius:20px; border: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);">
+                        <label
+                            style="display:block; font-size:0.7rem; color:rgba(255,255,255,0.5); font-weight:700; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.1em;">Target
+                            Budget (PHP)</label>
+                        <div style="position:relative; display:flex; align-items:center;">
+                            <span
+                                style="position:absolute; left:18px; color:var(--success-color); font-size:1.2rem; font-weight:700;">₱</span>
+                            <input type="number" id="rechargeAmountInput" placeholder="0.00"
+                                style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.1); padding:16px 16px 16px 44px; border-radius:12px; color:#fff; font-size:1.5rem; font-weight:700; font-family:inherit; outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                        </div>
+
+                        <div
+                            style="margin-top:20px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.08); padding-top:16px;">
+                            <div>
+                                <span
+                                    style="display:block; font-size:0.7rem; color:rgba(255,255,255,0.5); margin-bottom: 2px;">Total
+                                    SMS Unit <span style="color: #bf5af2;">(SMS Credits)</span>:</span>
+                                <span id="calcUnits"
+                                    style="font-size:1.8rem; font-weight:800; color:var(--success-color); letter-spacing: -0.02em;">0</span>
+                            </div>
+                            <div style="text-align:right;">
+                                <span
+                                    style="display:block; font-size:0.7rem; color:rgba(255,255,255,0.5); margin-bottom: 2px;">Applied
+                                    Rate:</span>
+                                <span id="calcUnitPrice" style="font-size:1rem; font-weight:700; color:#fff;">₱
+                                    0.35</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Pricing Tiers -->
+                <div style="flex: 1;">
+                    <h4
+                        style="font-size:0.7rem; color:rgba(255,255,255,0.5); text-transform:uppercase; font-weight: 700; letter-spacing: 0.1em; margin-bottom:12px;">
+                        Scale Reference</h4>
+                    <div
+                        style="background: rgba(0,0,0,0.25); border-radius: 12px; padding: 2px; border: 1px solid rgba(255,255,255,0.05);">
+                        <table style="width:100%; font-size:0.75rem; border-collapse:collapse; color:#fff;">
+                            <thead>
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.1); text-align:left;">
+                                    <th style="padding:8px 10px; color: rgba(255,255,255,0.5);">Budget Range</th>
+                                    <th style="padding:8px 10px; color: rgba(255,255,255,0.5);">Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pricingTableBody">
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding:8px 10px; opacity: 0.9;">₱ 1 - 100</td>
+                                    <td style="padding:8px 10px; font-weight: 600;">0.35</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding:8px 10px; opacity: 0.9;">₱ 101 - 500</td>
+                                    <td style="padding:8px 10px; font-weight: 600;">0.34</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding:8px 10px; opacity: 0.9;">₱ 501 - 1,000</td>
+                                    <td style="padding:8px 10px; font-weight: 600;">0.33</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                                    <td style="padding:8px 10px; opacity: 0.9;">₱ 1,001 - 3,000</td>
+                                    <td style="padding:8px 10px; font-weight: 600;">0.32</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 10px; opacity: 0.9;">₱ 3,001+</td>
+                                    <td style="padding:8px 10px; font-weight: 600;">0.31</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 14px; display: flex; align-items: flex-start; gap: 8px;">
+                        <i class="icon-lucide-history"
+                            style="font-size: 0.75rem; color: var(--warning-color); opacity: 0.6; margin-top: 1px;"></i>
+                        <p
+                            style="font-size: 0.68rem; color: rgba(255,255,255,0.4); line-height: 1.5; font-style: italic;">
+                            <strong style="color: #fff; font-style: normal;">SMS credits have a one-year
+                                validity</strong>, and the expiration date is refreshed with every top-up regardless of
+                            the amount.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="width:100%; height: 60px; background:rgba(255,159,10,0.12); border:1px solid rgba(255,159,10,0.3); color:var(--warning-color); border-radius:16px; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 0 20px; position: relative; z-index: 2;">
+                <i class="icon-lucide-info" style="font-size:1.1rem;"></i>
+                <p style="font-size:0.82rem; margin: 0; font-weight: 600; text-align: center;">Contact Jek (Marketing)
+                    or the DSI Department to proceed with the top-up.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generic Confirmation Modal (Destructive Actions) -->
+    <div id="confirmModal"
+        style="display:none; position:fixed; inset:0; z-index:50000; background:rgba(0,0,0,0.5); backdrop-filter:blur(8px); align-items:center; justify-content:center; animation: fadeIn 0.2s;">
+        <div class="glass-panel"
+            style="width:400px; padding:32px; border-radius:28px; border:1px solid rgba(255,255,255,0.1); background:rgba(30,30,35,0.8); text-align:center; box-shadow:0 30px 60px rgba(0,0,0,0.5);">
+            <div
+                style="width:56px; height:56px; background:rgba(255,69,58,0.1); color:#ff453a; border-radius:18px; display:flex; align-items:center; justify-content:center; margin:0 auto 20px auto;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                    <path d="M10 11v6"></path>
+                    <path d="M14 11v6"></path>
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+                </svg>
+            </div>
+            <h3 id="confirmTitle" style="color:#fff; margin-bottom:12px; font-size:1.25rem;">Confirm Action</h3>
+            <p id="confirmText"
+                style="color:rgba(255,255,255,0.6); margin-bottom:28px; font-size:0.9rem; line-height:1.5; padding:0 10px;">
+            </p>
+            <div style="display:flex; gap:12px; justify-content:stretch;">
+                <button id="confirmCancel"
+                    style="flex:1; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:14px; cursor:pointer; font-weight:600; transition:0.2s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.08)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.05)'">Cancel</button>
+                <button id="confirmProceed"
+                    style="flex:1; background:#ff453a; border:none; color:#fff; padding:12px; border-radius:14px; cursor:pointer; font-weight:700; transition:0.3s; box-shadow:0 8px 15px rgba(255,69,58,0.3);"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 25px rgba(255,69,58,0.4)'"
+                    onmouseout="this.style.transform='none'; this.style.boxShadow='0 8px 15px rgba(255,69,58,0.3)'">Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+    <!-- Services & Engine -->
+    <script src="config.js?v=CRM_MASTER_v26"></script>
+    <script src="core-api.js?v=CRM_MASTER_v26"></script>
+    <script src="utils.js?v=CRM_MASTER_v26"></script>
+    <script src="scheduler.js?v=CRM_MASTER_v26"></script>
+
+    <!-- RBAC & Auth -->
+    <script src="auth.js?v=CRM_MASTER_v26"></script>
+    <script src="rbac.js?v=CRM_MASTER_v26"></script>
+    <script src="audit.js?v=CRM_MASTER_v26"></script>
+
+    <!-- Views & Components -->
+    <script src="dashboard.js?v=CRM_MASTER_v26"></script>
+    <script src="send-sms.js?v=CRM_MASTER_v26"></script>
+    <script src="contacts.js?v=CRM_MASTER_v26"></script>
+    <script src="scheduled.js?v=CRM_MASTER_v26"></script>
+    <script src="templates.js?v=CRM_MASTER_v26"></script>
+    <script src="campaigns.js?v=CRM_MASTER_v26"></script>
+    <script src="automation.js?v=CRM_MASTER_v26"></script>
+    <script src="inbox.js?v=CRM_MASTER_v26"></script>
+    <script src="blacklist.js?v=CRM_MASTER_v26"></script>
+    <script src="api-view.js?v=CRM_MASTER_v26"></script>
+    <script src="users.js?v=CRM_MASTER_v26"></script>
+    <script src="profile.js?v=CRM_MASTER_v26"></script>
+
+    <!-- Standalone Helpers -->
+    <script src="chatbot.js?v=CRM_MASTER_v26"></script>
+    <script src="integration_code.js?v=CRM_MASTER_v26"></script>
+
+    <!-- Main Entry Point -->
+    <script src="app.js?v=CRM_MASTER_v26"></script>
+</body>
+
+</html>
